@@ -14,7 +14,9 @@
     "require": {
         "php": "~8.3",
         "slim/slim": "^4.14",
-        "slim/psr7": "^1.7"
+        "slim/psr7": "^1.7",
+        "php-di/php-di": "^7.0",
+        "hassankhan/config": "^3.1"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
@@ -22,7 +24,7 @@
         "symplify/easy-coding-standard": "^12.3"
     },
     "scripts": {
-        "phpstan": "vendor/bin/phpstan analyse -l max src",
+        "phpstan": "vendor/bin/phpstan analyse -l max src app",
         "ecs": "vendor/bin/ecs",
         "ecs-fix": "vendor/bin/ecs --fix",
         "standards": [
