@@ -45,9 +45,15 @@ final class Bootstrap
 	 */
 	public function createSlimApi(ContainerInterface $container): App
 	{
+		/** @var Config $config */
+		$config = $container->get(Config::class);
+		/** @var array{error-details: bool} $appConfig */
+		$appConfig = $config->get(Config::KEY_APP);
+
 		/** @var App<\DI\Container> $app */
 		$app = AppFactory::create();
 		$app->addRoutingMiddleware();
+		$app->addErrorMiddleware($appConfig['error-details'], true, true);
 
 		$routeLoader = $this->requireCallableFile(APP_DIR, 'routes.php');
 		$routeLoader($app);

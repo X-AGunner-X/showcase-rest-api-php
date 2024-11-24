@@ -6,6 +6,8 @@ namespace App\Components\Config;
 
 class Config
 {
+	public const string KEY_APP = 'app';
+
 	public function __construct(private \Noodlehaus\Config $config)
 	{
 	}

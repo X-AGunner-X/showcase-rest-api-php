@@ -1,2 +1,5 @@
 {
+    "app": {
+        "error-details": false
+    }
 }
