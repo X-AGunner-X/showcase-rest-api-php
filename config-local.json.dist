@@ -1,5 +1,5 @@
 {
     "app": {
-        "error-details": true
+        "show_error_details": true
     }
 }

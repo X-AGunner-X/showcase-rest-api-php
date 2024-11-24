@@ -23,7 +23,7 @@ final class Bootstrap
 	public function buildContainer(): ContainerInterface
 	{
 		$this->containerBuilder->addDefinitions([
-			Config::class => function (ContainerInterface $container): Config {
+			Config::class => function (): Config {
 				$configDir = APP_DIR . '/config/';
 
 				return new Config(
@@ -37,6 +37,9 @@ final class Bootstrap
 			}
 		]);
 
+		$containerConfiguration = $this->requireCallableFile(APP_DIR, 'containerConfiguration.php');
+		$containerConfiguration($this->containerBuilder);
+
 		return $this->containerBuilder->build();
 	}
 
@@ -45,15 +48,9 @@ final class Bootstrap
 	 */
 	public function createSlimApi(ContainerInterface $container): App
 	{
-		/** @var Config $config */
-		$config = $container->get(Config::class);
-		/** @var array{error-details: bool} $appConfig */
-		$appConfig = $config->get(Config::KEY_APP);
-
-		/** @var App<\DI\Container> $app */
-		$app = AppFactory::create();
+		$app = $this->createAppFromContainer($container);
 		$app->addRoutingMiddleware();
-		$app->addErrorMiddleware($appConfig['error-details'], true, true);
+		$this->addErrorMiddleware($container, $app);
 
 		$routeLoader = $this->requireCallableFile(APP_DIR, 'routes.php');
 		$routeLoader($app);
@@ -69,5 +66,38 @@ final class Bootstrap
 		}
 
 		return $routeLoader;
+	}
+
+	/**
+	 * @return \Slim\App<\DI\Container>
+	 */
+	private function createAppFromContainer(ContainerInterface $container): App
+	{
+		AppFactory::setContainer($container);
+
+		/** @var App<\DI\Container> $app */
+		$app = AppFactory::create();
+		return $app;
+	}
+
+	/**
+	 * @param \Slim\App<\DI\Container> $app
+	 */
+	private function addErrorMiddleware(ContainerInterface $container, App $app): void
+	{
+		/** @var Config $config */
+		$config = $container->get(Config::class);
+
+		/** @var array{show_error_details: bool} $appConfig */
+		$appConfig = $config->get(Config::KEY_APP);
+
+		/** @var \App\Components\Application\LoggerFactory $loggerFactory */
+		$loggerFactory = $container->get(LoggerFactory::class);
+		$app->addErrorMiddleware(
+			$appConfig['show_error_details'],
+			true,
+			true,
+			$loggerFactory->createLogger(LoggerFactory::LOGGER_APP)
+		);
 	}
 }
