@@ -17,6 +17,17 @@
         "slim/psr7": "^1.7"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "phpstan/phpstan": "^2.0",
+        "symplify/easy-coding-standard": "^12.3"
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse -l max src",
+        "ecs": "vendor/bin/ecs",
+        "ecs-fix": "vendor/bin/ecs --fix",
+        "standards": [
+            "@phpstan",
+            "@ecs"
+        ]
     }
 }
