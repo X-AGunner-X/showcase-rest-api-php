@@ -1,5 +1,10 @@
 {
     "app": {
         "show_error_details": true
-    }
+    },
+     "redis": {
+         "scheme": "tcp",
+         "host": "redis",
+         "port": 6379
+     }
 }

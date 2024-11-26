@@ -12,3 +12,9 @@ services:
       - "8081:80"
     volumes:
       - .:/var/www/html
+
+  redis:
+    image: redis:latest
+    container_name: i-billboard-redis
+    ports:
+      - "6379:6379"
