@@ -9,7 +9,6 @@ use App\Domain\Redis\RedisFacade;
 use App\Domain\Redis\RedisKey;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\App\Unit\WithPsr7FactoriesTrait;
 

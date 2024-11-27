@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Domain\Redis;
 
-use App\Components\Redis\Exception\RedisServerException;
 use App\Components\Redis\RedisClientWrapper;
 use App\Domain\Redis\RedisFacade;
 use App\Domain\Redis\RedisKey;
 use App\Domain\Track\Track;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Predis\Response\ServerException;
 
 class RedisFacadeTest extends TestCase
 {

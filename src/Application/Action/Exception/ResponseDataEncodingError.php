@@ -6,7 +6,7 @@ namespace App\Application\Action\Exception;
 
 class ResponseDataEncodingError extends \LogicException
 {
-	private function __construct($exception)
+	private function __construct(\JsonException $exception)
 	{
 		parent::__construct(
 			'Json error: ' . $exception->getMessage(),

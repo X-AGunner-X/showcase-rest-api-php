@@ -11,7 +11,7 @@ class ForbiddenContentTypeException extends \RuntimeException implements HttpExc
 {
 	private function __construct(string $allowedContentType)
 	{
-		parent::__construct(sprintf('Forbidden content type. Only "%s" allowed', $allowedContentType));
+		parent::__construct(sprintf('Forbidden content type. Only %s allowed', $allowedContentType));
 	}
 
 	public static function createJsonAllowed(): self
