@@ -50,4 +50,25 @@ class RedisFacadeTest extends TestCase
 
 		$this->redisFacade->incrementTrackCount($track);
 	}
+
+	public function testGetCount(): void
+	{
+		$this->redisClientWrapperMock
+			->expects($this->once())
+			->method('get')
+			->with(RedisKey::TRACK_COUNT->value);
+
+		$this->redisFacade->getCount();
+	}
+
+	public function testGetCountReturnZeroOnMissingCountInRedis(): void
+	{
+		$this->redisClientWrapperMock
+			->expects($this->once())
+			->method('get')
+			->with(RedisKey::TRACK_COUNT->value)
+			->willReturn(null);
+
+		$this->redisFacade->getCount();
+	}
 }

@@ -19,4 +19,9 @@ class RedisFacade
 			$this->redis->incrementBy(RedisKey::TRACK_COUNT->value, $track->count);
 		}
 	}
+
+	public function getCount(): int
+	{
+		return (int)$this->redis->get(RedisKey::TRACK_COUNT->value);
+	}
 }
