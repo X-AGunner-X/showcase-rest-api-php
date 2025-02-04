@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\File;
+namespace App\Components\File;
 
-use App\Domain\File\Exception\JsonEncodeError;
+use App\Components\File\Exception\JsonEncodeError;
 
 class FileWriter
 {

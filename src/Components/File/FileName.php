@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\File;
+namespace App\Components\File;
 
 enum FileName: string
 {

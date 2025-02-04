@@ -6,6 +6,8 @@ use App\Components\Config\Config;
 use App\Domain\Count\CountProviderInterface;
 use App\Domain\Count\CountUpdaterInterface;
 use App\Domain\Redis\RedisFacade;
+use App\Domain\Track\TrackDataStorageInterface;
+use App\Domain\Track\TrackFileSystemStorage;
 use DI\ContainerBuilder;
 use Lcobucci\Clock\Clock;
 use Lcobucci\Clock\SystemClock;
@@ -38,6 +40,9 @@ return static function (ContainerBuilder $containerBuilder): void {
 		),
 		CountUpdaterInterface::class => fn(ContainerInterface $container): CountUpdaterInterface => $container->get(
 			RedisFacade::class
-		)
+		),
+		TrackDataStorageInterface::class => fn(
+			ContainerInterface $container
+		): TrackDataStorageInterface => $container->get(TrackFileSystemStorage::class)
 	]);
 };

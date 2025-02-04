@@ -36,19 +36,6 @@ class RedisFacadeTest extends TestCase
 		$this->redisFacade->incrementTrackCount($trackDummy);
 	}
 
-	public function testIncrementTrackCountDoesNotCallRedisWhenCountIsNull(): void
-	{
-		$track = new Track();
-
-		$this->assertNull($track->count);
-
-		$this->redisClientWrapperMock
-			->expects($this->never())
-			->method('incrementBy');
-
-		$this->redisFacade->incrementTrackCount($track);
-	}
-
 	public function testGetCount(): void
 	{
 		$this->redisClientWrapperMock

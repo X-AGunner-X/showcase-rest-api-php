@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Domain;
 
-use App\Domain\File\Exception\JsonEncodeError;
-use App\Domain\File\File;
-use App\Domain\File\FileWriter;
+use App\Components\File\Exception\JsonEncodeError;
+use App\Components\File\File;
+use App\Components\File\FileWriter;
 use PHPUnit\Framework\TestCase;
 
 class FileWriterTest extends TestCase

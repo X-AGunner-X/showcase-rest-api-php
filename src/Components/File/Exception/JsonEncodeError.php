@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\File\Exception;
+namespace App\Components\File\Exception;
 
 class JsonEncodeError extends \LogicException
 {

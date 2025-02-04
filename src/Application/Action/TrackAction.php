@@ -7,12 +7,8 @@ namespace App\Application\Action;
 use App\Components\Http\HttpContentType;
 use App\Components\Http\RequestValidator;
 use App\Components\Json\JsonRequestBodyMapper;
-use App\Domain\Count\CountUpdaterInterface;
-use App\Domain\File\FileFactory;
-use App\Domain\File\FileName;
-use App\Domain\File\FileWriter;
-use App\Domain\Redis\RedisFacade;
 use App\Domain\Track\TrackFactory;
+use App\Domain\Track\TrackProcessor;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -22,9 +18,7 @@ readonly class TrackAction
 		private TrackFactory $trackFactory,
 		private RequestValidator $requestValidator,
 		private JsonRequestBodyMapper $requestBodyMapper,
-		private FileWriter $fileWriter,
-		private FileFactory $fileFactory,
-		private CountUpdaterInterface $countUpdater,
+		private TrackProcessor $trackProcessor
 	) {
 	}
 
@@ -32,14 +26,11 @@ readonly class TrackAction
 	{
 		$this->requestValidator->checkContentType($request, HttpContentType::APPLICATION_JSON);
 
-		$track = $this->trackFactory->create();
 		$contents = $request->getBody()->getContents();
-
+		$track = $this->trackFactory->create();
 		$this->requestBodyMapper->mapFromJson($contents, $track);
 
-		$this->countUpdater->incrementTrackCount($track);
-
-		$this->fileWriter->appendDataToFile($this->fileFactory->createStorageFile(FileName::TRACKING_FILE), $track);
+		$this->trackProcessor->processTrack($track);
 
 		return $response;
 	}

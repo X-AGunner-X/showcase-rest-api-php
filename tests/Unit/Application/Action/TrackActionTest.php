@@ -8,13 +8,9 @@ use App\Application\Action\TrackAction;
 use App\Components\Http\HttpContentType;
 use App\Components\Http\RequestValidator;
 use App\Components\Json\JsonRequestBodyMapper;
-use App\Domain\Count\CountUpdaterInterface;
-use App\Domain\File\File;
-use App\Domain\File\FileFactory;
-use App\Domain\File\FileName;
-use App\Domain\File\FileWriter;
 use App\Domain\Track\Track;
 use App\Domain\Track\TrackFactory;
+use App\Domain\Track\TrackProcessor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Response;
@@ -29,26 +25,20 @@ class TrackActionTest extends TestCase
 	private TrackFactory|MockObject $trackFactoryMock;
 	private RequestValidator|MockObject $requestValidatorMock;
 	private JsonRequestBodyMapper|MockObject $jsonRequestBodyMapperMock;
-	private FileWriter|MockObject $fileWriterMock;
-	private FileFactory|MockObject $fileFactoryMock;
-	private CountUpdaterInterface|MockObject $countUpdaterMock;
+	private TrackProcessor|MockObject $trackProcessorMock;
 
 	public function setUp(): void
 	{
 		$this->trackFactoryMock = $this->createMock(TrackFactory::class);
 		$this->requestValidatorMock = $this->createMock(RequestValidator::class);
 		$this->jsonRequestBodyMapperMock = $this->createMock(JsonRequestBodyMapper::class);
-		$this->fileWriterMock = $this->createMock(FileWriter::class);
-		$this->fileFactoryMock = $this->createMock(FileFactory::class);
-		$this->countUpdaterMock = $this->createMock(CountUpdaterInterface::class);
+		$this->trackProcessorMock = $this->createMock(TrackProcessor::class);
 
 		$this->trackAction = new TrackAction(
 			$this->trackFactoryMock,
 			$this->requestValidatorMock,
 			$this->jsonRequestBodyMapperMock,
-			$this->fileWriterMock,
-			$this->fileFactoryMock,
-			$this->countUpdaterMock,
+			$this->trackProcessorMock,
 		);
 	}
 
@@ -80,22 +70,10 @@ class TrackActionTest extends TestCase
 			->method('mapFromJson')
 			->with($contentsMock, $trackMock);
 
-		$this->countUpdaterMock
+		$this->trackProcessorMock
 			->expects($this->once())
-			->method('incrementTrackCount')
+			->method('processTrack')
 			->with($trackMock);
-
-		$fileMock = $this->createMock(File::class);
-		$this->fileFactoryMock
-			->expects($this->once())
-			->method('createStorageFile')
-			->with(FileName::TRACKING_FILE)
-			->willReturn($fileMock);
-
-		$this->fileWriterMock
-			->expects($this->once())
-			->method('appendDataToFile')
-			->with($fileMock, $trackMock);
 
 		$responseMock = $this->createMock(Response::class);
 

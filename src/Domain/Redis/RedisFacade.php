@@ -17,9 +17,7 @@ readonly class RedisFacade implements CountProviderInterface, CountUpdaterInterf
 
 	public function incrementTrackCount(Track $track): void
 	{
-		if ($track->count !== null) {
-			$this->redis->incrementBy(RedisKey::TRACK_COUNT->value, $track->count);
-		}
+		$this->redis->incrementBy(RedisKey::TRACK_COUNT->value, $track->count);
 	}
 
 	public function getCount(): int

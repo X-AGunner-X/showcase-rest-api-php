@@ -22,7 +22,7 @@ apart from the above-mentioned requirements
 - ✅ JSON input to PHP classes mapping
 - ✅ Docker for convenient team development
 - ✅ Easy to change count storage implementation
-- 🚧 **Coming Soon** 🚧 Easy to change Request data storage implementation
+- ✅ Easy to change Request data storage implementation
     
 ## Local development
 
