@@ -4,6 +4,9 @@ services:
   app:
     build:
       context: .
+      args:
+        www_data_uid: 1000
+        www_data_gid: 1000
     container_name: i-billboard-app
     ports:
       - "8081:80"

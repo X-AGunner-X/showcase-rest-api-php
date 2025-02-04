@@ -1,1 +1,5 @@
 .idea
+vendor
+app/config/config-local.json
+.phpunit.result.cache
+logs
