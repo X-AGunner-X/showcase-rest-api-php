@@ -8,7 +8,7 @@ use App\Components\Redis\Exception\RedisServerException;
 use Predis\Client;
 use Predis\Response\ServerException;
 
-class RedisClientWrapper
+readonly class RedisClientWrapper
 {
 	public function __construct(private Client $redis)
 	{

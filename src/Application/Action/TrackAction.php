@@ -7,6 +7,7 @@ namespace App\Application\Action;
 use App\Components\Http\HttpContentType;
 use App\Components\Http\RequestValidator;
 use App\Components\Json\JsonRequestBodyMapper;
+use App\Domain\Count\CountUpdaterInterface;
 use App\Domain\File\FileFactory;
 use App\Domain\File\FileName;
 use App\Domain\File\FileWriter;
@@ -15,7 +16,7 @@ use App\Domain\Track\TrackFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class TrackAction
+readonly class TrackAction
 {
 	public function __construct(
 		private TrackFactory $trackFactory,
@@ -23,7 +24,7 @@ class TrackAction
 		private JsonRequestBodyMapper $requestBodyMapper,
 		private FileWriter $fileWriter,
 		private FileFactory $fileFactory,
-		private RedisFacade $trackFacade,
+		private CountUpdaterInterface $countUpdater,
 	) {
 	}
 
@@ -36,7 +37,7 @@ class TrackAction
 
 		$this->requestBodyMapper->mapFromJson($contents, $track);
 
-		$this->trackFacade->incrementTrackCount($track);
+		$this->countUpdater->incrementTrackCount($track);
 
 		$this->fileWriter->appendDataToFile($this->fileFactory->createStorageFile(FileName::TRACKING_FILE), $track);
 

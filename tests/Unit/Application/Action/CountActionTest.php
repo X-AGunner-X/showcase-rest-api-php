@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\App\Unit\Application\Action;
 
 use App\Application\Action\CountAction;
-use App\Domain\Redis\RedisFacade;
-use App\Domain\Redis\RedisKey;
+use App\Domain\Count\CountProviderInterface;
+use App\Domain\Count\CountFetcher;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,19 +17,19 @@ class CountActionTest extends TestCase
 	use WithPsr7FactoriesTrait;
 
 	private CountAction $countAction;
-	private RedisFacade|MockObject $redisFacadeMock;
+	private CountProviderInterface|MockObject $countServiceMock;
 
 	protected function setUp(): void
 	{
-		$this->redisFacadeMock = $this->createMock(RedisFacade::class);
+		$this->countServiceMock = $this->createMock(CountFetcher::class);
 
-		$this->countAction = new CountAction($this->redisFacadeMock);
+		$this->countAction = new CountAction($this->countServiceMock);
 	}
 
 	public function testInvokePreparesResponseWithCorrectData(): void
 	{
 		$expectedCount = 42;
-		$this->redisFacadeMock
+		$this->countServiceMock
 			->expects($this->once())
 			->method('getCount')
 			->willReturn($expectedCount);
@@ -42,7 +42,7 @@ class CountActionTest extends TestCase
 		$response->getBody()->rewind();
 		$this->assertSame(
 			$response->getBody()->getContents(),
-			json_encode([RedisKey::TRACK_COUNT->value => $expectedCount], JSON_THROW_ON_ERROR)
+			json_encode(['count' => $expectedCount], JSON_THROW_ON_ERROR)
 		);
 	}
 }

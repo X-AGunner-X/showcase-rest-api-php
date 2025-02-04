@@ -8,11 +8,11 @@ use App\Application\Action\TrackAction;
 use App\Components\Http\HttpContentType;
 use App\Components\Http\RequestValidator;
 use App\Components\Json\JsonRequestBodyMapper;
+use App\Domain\Count\CountUpdaterInterface;
 use App\Domain\File\File;
 use App\Domain\File\FileFactory;
 use App\Domain\File\FileName;
 use App\Domain\File\FileWriter;
-use App\Domain\Redis\RedisFacade;
 use App\Domain\Track\Track;
 use App\Domain\Track\TrackFactory;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,7 +31,7 @@ class TrackActionTest extends TestCase
 	private JsonRequestBodyMapper|MockObject $jsonRequestBodyMapperMock;
 	private FileWriter|MockObject $fileWriterMock;
 	private FileFactory|MockObject $fileFactoryMock;
-	private RedisFacade|MockObject $redisFacadeMock;
+	private CountUpdaterInterface|MockObject $countUpdaterMock;
 
 	public function setUp(): void
 	{
@@ -40,7 +40,7 @@ class TrackActionTest extends TestCase
 		$this->jsonRequestBodyMapperMock = $this->createMock(JsonRequestBodyMapper::class);
 		$this->fileWriterMock = $this->createMock(FileWriter::class);
 		$this->fileFactoryMock = $this->createMock(FileFactory::class);
-		$this->redisFacadeMock = $this->createMock(RedisFacade::class);
+		$this->countUpdaterMock = $this->createMock(CountUpdaterInterface::class);
 
 		$this->trackAction = new TrackAction(
 			$this->trackFactoryMock,
@@ -48,7 +48,7 @@ class TrackActionTest extends TestCase
 			$this->jsonRequestBodyMapperMock,
 			$this->fileWriterMock,
 			$this->fileFactoryMock,
-			$this->redisFacadeMock,
+			$this->countUpdaterMock,
 		);
 	}
 
@@ -80,7 +80,7 @@ class TrackActionTest extends TestCase
 			->method('mapFromJson')
 			->with($contentsMock, $trackMock);
 
-		$this->redisFacadeMock
+		$this->countUpdaterMock
 			->expects($this->once())
 			->method('incrementTrackCount')
 			->with($trackMock);

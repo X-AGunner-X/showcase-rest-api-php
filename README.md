@@ -21,7 +21,7 @@ apart from the above-mentioned requirements
 - ✅ Error logging to file
 - ✅ JSON input to PHP classes mapping
 - ✅ Docker for convenient team development
-- 🚧 **Coming Soon** 🚧 Easy to change count storage implementation
+- ✅ Easy to change count storage implementation
 - 🚧 **Coming Soon** 🚧 Easy to change Request data storage implementation
     
 ## Local development
