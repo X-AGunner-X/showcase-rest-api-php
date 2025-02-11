@@ -1,5 +1,10 @@
 {
     "app": {
         "show_error_details": false
+    },
+    "redis": {
+        "scheme": null,
+        "host": null,
+        "port": null
     }
 }

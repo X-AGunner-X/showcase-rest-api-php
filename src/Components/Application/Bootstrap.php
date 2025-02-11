@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Components\Application;
 
+use App\Application\Middleware\HttpErrorMiddleware;
 use App\Components\Config\Config;
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
@@ -93,6 +94,8 @@ final class Bootstrap
 
 		/** @var \App\Components\Application\LoggerFactory $loggerFactory */
 		$loggerFactory = $container->get(LoggerFactory::class);
+
+		$app->add(HttpErrorMiddleware::class);
 		$app->addErrorMiddleware(
 			$appConfig['show_error_details'],
 			true,

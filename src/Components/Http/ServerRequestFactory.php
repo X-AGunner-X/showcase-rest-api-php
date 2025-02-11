@@ -7,12 +7,17 @@ namespace App\Components\Http;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ServerRequestFactory implements ServerRequestFactoryInterface {
-
-	public function __construct(private ServerRequestFactoryInterface $psr7Factory) {
+class ServerRequestFactory implements ServerRequestFactoryInterface
+{
+	public function __construct(private ServerRequestFactoryInterface $psr7Factory)
+	{
 	}
 
-	public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface {
+	/**
+	 * @param array<string, mixed> $serverParams
+	 */
+	public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+	{
 		return $this->psr7Factory->createServerRequest($method, $uri, $serverParams);
 	}
 }
